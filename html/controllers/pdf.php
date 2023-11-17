@@ -1,16 +1,23 @@
 
 <?php
-require_once '../vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 // $html = file_get_contents('pdf_reports.php');//EL FILE_GET_CONTENTS ES UNA FUNCION DE PHP QUE OBTIENE UNA CADENA DE TEXTO DE UN ARCHIVO
 
-require '../controllers/connection.php';
-
-
-// Consulta SQL para obtener datos de la tabla formulario y realizar un JOIN con las tablas equipo y ambiente
+require 'connection.php';
+if(isset($_GET['fecha']) && !empty($_GET['fecha'])){
+    $fecha = $_GET['fecha'];
+$sql =  "SELECT f.id_formulario, f.fecha_hora, f.asignatura, f.dato_docente, e.nombre_equipo, a.nombre_ambiente, f.carrera 
+FROM formulario f 
+LEFT JOIN equipo e ON f.equipo = e.id_equipo 
+LEFT JOIN ambiente a ON f.ambiente = a.id_ambiente
+WHERE DATE(f.fecha_hora) = $fecha";
+}else{
 $sql = "SELECT f.id_formulario, f.fecha_hora, f.asignatura, f.dato_docente, e.nombre_equipo, a.nombre_ambiente, f.carrera 
 FROM formulario f 
 LEFT JOIN equipo e ON f.equipo = e.id_equipo 
 LEFT JOIN ambiente a ON f.ambiente = a.id_ambiente";
+}
+
 $result = $conn->query($sql);
 $html = '
 <!DOCTYPE html>
