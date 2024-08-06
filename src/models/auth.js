@@ -14,7 +14,7 @@ function getUserById(id, callback) {
 }
 //login
 function login(email, password, callback) {
-  const query = 'SELECT * FROM usuarios WHERE user = ? AND password = ?';
+  const query = 'SELECT * FROM usuarios WHERE login = ? AND password = ?';
   connection.query(query, [email, password], (error, results) => {
     if (error) {
       callback(error);
